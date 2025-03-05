@@ -7,7 +7,7 @@
 ######################################################################
 import util
 from pydantic import BaseModel, Field
-
+import re
 import numpy as np
 
 
@@ -163,7 +163,12 @@ class Chatbot:
         pre-processed with preprocess()
         :returns: list of movie titles that are potentially in the text
         """
-        return []
+        poss_titles = []
+        potential = r'"(.*?)"'
+        matches = re.findall(potential, preprocessed_input)
+        for match in matches:
+            poss_titles.append(match)
+        return poss_titles
 
     def find_movies_by_title(self, title):
         """ Given a movie title, return a list of indices of matching movies.
