@@ -188,7 +188,35 @@ class Chatbot:
         :param title: a string containing a movie title
         :returns: a list of indices of matching movies
         """
-        return []
+        indicies = []
+        year_pat = r"\(((19|20)\d{2})\)"
+        articles = ["the", "a", "an"]
+        year_match =  re.search(year_pat, title)
+        title_year = None
+        title_wo_year = title
+        if year_match:
+            title_year = year_match.group(1)
+            title_wo_year = re.sub(r"\s*\(((19|20)\d{2})\)\s*", "", title)
+        alt_titles = [title_wo_year]
+        title_wo_year_lower = title_wo_year.lower()
+        for article in articles:
+            if title_wo_year_lower.startswith(article + " "):
+                new_title = title_wo_year[len(article)+1:]
+                new_title += ", " + article
+                alt_titles.append(new_title)
+        for i, movie in enumerate(self.titles):
+            movie_title = movie[0]
+            movie_title_wo_year = re.sub(r"\s*\(((19|20)\d{2})\)\s*", "", movie_title)
+            for alt_title in alt_titles:
+                if alt_title.lower() == movie_title_wo_year.lower():
+                    if title_year == None:
+                        indicies.append(i)
+                        break
+                    elif f"({title_year})" in movie_title:
+                        indicies.append(i)
+                        break
+                
+        return indicies
 
     def extract_sentiment(self, preprocessed_input):
         """Extract a sentiment rating from a line of pre-processed text.
@@ -206,7 +234,53 @@ class Chatbot:
         pre-processed with preprocess()
         :returns: a numerical value for the sentiment of the text
         """
-        return 0
+        remove_titles_input = preprocessed_input
+        for title in self.extract_titles(preprocessed_input):
+            remove_titles_input = preprocessed_input.replace(f'"{title}"', '')
+        tokens = remove_titles_input.lower().split()
+        positive = 0
+        negative = 0
+        #words = [re.sub(r'[^\w\s]', '', token) for token in tokens]
+        reverse_words = ["not", "didn't", "never", "no", "couldn't", "wouldn't", "can't", "isn't", "doesn't"]
+        i=0
+        while i <len(tokens):
+            found_sentiment = False
+            word = tokens[i]
+            if word in self.sentiment:
+                sentiment = self.sentiment[word]
+                found_sentiment = True
+            else:
+                suffixes = ['ing', 'ed', 's', 'es', 'ly', "'s", "d"]
+                for suffix in suffixes:
+                    if word.endswith(suffix) and len(word) >len(suffix):
+                        stemmed = word[:-len(suffix)]
+                        if stemmed in self.sentiment:
+                            sentiment = self.sentiment[stemmed]
+                            found_sentiment = True
+                            break
+            if found_sentiment:
+                is_neg = False
+                if i > 0 and tokens[i-1] in reverse_words:
+                    is_neg = True
+                elif i > 1 and tokens[i-2] in reverse_words:
+                    is_neg = True
+                if is_neg:
+                    if sentiment == 'pos':
+                        negative +=1
+                    elif sentiment =='neg':
+                        positive +=1 
+                else:
+                    if sentiment == 'neg':
+                        negative +=1
+                    elif sentiment =='pos':
+                        positive +=1 
+            i+=1
+        if positive>negative:
+            return 1
+        elif negative>positive:
+            return -1
+        else:
+            return 0
 
     ############################################################################
     # 3. Movie Recommendation helper functions                                 #
