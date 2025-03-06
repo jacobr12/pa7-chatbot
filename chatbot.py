@@ -104,7 +104,26 @@ class Chatbot:
         if self.llm_enabled:
             response = "I processed {} in LLM Programming mode!!".format(line)
         else:
-            response = "I processed {} in Starter (GUS) mode!!".format(line)
+            movie_title = None
+            titles = self.extract_titles(self.preprocess(line))
+            if not titles:
+                return "I don't see a movie title in your query?"
+            sentiment = self.extract_sentiment(self.preprocess(line))
+            movie_indexes = self.find_movies_by_title(titles[0])
+            if not movie_indexes:
+                return "I can't find your movie in my database. Can you ask me about another movie?"
+            if len(movie_indexes) > 1:
+                response = "I found multiple movies corresponding to yours. Can you clarify which one you meant"
+                for i, movie in enumerate(movie_indexes[:10]):  
+                    movie_title = self.titles[movie][0]
+                    response += f"  {i+1}. {movie_title}\n"
+                return response
+            if sentiment > 0:
+                return "Glad to hear you liked " + titles[0] +  "! Would you like to hear a similar movie?"
+            elif sentiment <0:
+                return "Sorry you did not like  " + titles[0] +  "!  What did you not like about it?"
+            else:
+                return "I can't tell how you felt about  " + titles[0] +  "!  Can you tell me more about your feelings toward it."
 
         ########################################################################
         #                          END OF YOUR CODE                            #
@@ -241,7 +260,7 @@ class Chatbot:
         positive = 0
         negative = 0
         #words = [re.sub(r'[^\w\s]', '', token) for token in tokens]
-        reverse_words = ["not", "didn't", "never", "no", "couldn't", "wouldn't", "can't", "isn't", "doesn't"]
+        reverse_words = ["don't", "won't", "neither", "nor", "haven't", "not", "didn't", "never", "no", "couldn't", "wouldn't", "can't", "isn't", "doesn't", "weren't", "wasn't", "shouldn't", "hadn't", "hasn't"]
         i=0
         while i <len(tokens):
             found_sentiment = False
