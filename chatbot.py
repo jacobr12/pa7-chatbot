@@ -33,7 +33,7 @@ class Chatbot:
         ########################################################################
 
         # Binarize the movie ratings before storing the binarized matrix.
-        self.ratings = ratings
+        self.ratings = self.binarize(ratings)
         ########################################################################
         #                             END OF YOUR CODE                         #
         ########################################################################
@@ -314,6 +314,12 @@ class Chatbot:
         # The starter code returns a new matrix shaped like ratings but full of
         # zeros.
         binarized_ratings = np.zeros_like(ratings)
+        binarized_ratings[ratings > threshold] = 1
+        for i in range(ratings.shape[0]):
+            for j in range(ratings.shape[1]):
+                rating = ratings[i, j]
+                if rating != 0 and rating <= threshold:
+                    binarized_ratings[i, j] = -1
 
         ########################################################################
         #                        END OF YOUR CODE                              #
@@ -334,6 +340,9 @@ class Chatbot:
         # TODO: Compute cosine similarity between the two vectors.             #
         ########################################################################
         similarity = 0
+        if np.linalg.norm(u) == 0 or np.linalg.norm(v) == 0:
+            return 0
+        similarity = np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
         ########################################################################
         #                          END OF YOUR CODE                            #
         ########################################################################
@@ -377,6 +386,22 @@ class Chatbot:
 
         # Populate this list with k movie indices to recommend to the user.
         recommendations = []
+        rated = np.nonzero(user_ratings)[0]
+        pred_scores = []
+        for i in range(len(user_ratings)):
+            if user_ratings[i] ==0:
+                pred = 0
+                
+                for a in rated:
+                    similarity = self.similarity(ratings_matrix[i], ratings_matrix[a])
+                    pred+= similarity * user_ratings[a]
+               
+                pred_scores.append((i,pred))
+        sorted_predictions= sorted(pred_scores, key=lambda x:(x[1], -x[0]), reverse=True)
+        recs = [movie for movie, score in sorted_predictions[:k]]
+        return recs
+
+
 
         ########################################################################
         #                        END OF YOUR CODE                              #
