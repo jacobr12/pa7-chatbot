@@ -34,6 +34,7 @@ class Chatbot:
 
         # Binarize the movie ratings before storing the binarized matrix.
         self.ratings = self.binarize(ratings)
+        self.user_movies = []
         ########################################################################
         #                             END OF YOUR CODE                         #
         ########################################################################
@@ -102,33 +103,36 @@ class Chatbot:
         # code in a modular fashion to make it easier to improve and debug.    #
         ########################################################################
         if self.llm_enabled:
-            response = "I processed {} in LLM Programming mode!!".format(line)
-        else:
-            movie_title = None
-            titles = self.extract_titles(self.preprocess(line))
-            if not titles:
-                return "I don't see a movie title in your query?"
-            sentiment = self.extract_sentiment(self.preprocess(line))
-            movie_indexes = self.find_movies_by_title(titles[0])
-            if not movie_indexes:
-                return "I can't find your movie in my database. Can you ask me about another movie?"
-            if len(movie_indexes) > 1:
-                response = "I found multiple movies corresponding to yours. Can you clarify which one you meant"
-                for i, movie in enumerate(movie_indexes[:10]):  
-                    movie_title = self.titles[movie][0]
-                    response += f"  {i+1}. {movie_title}\n"
-                return response
-            if sentiment > 0:
-                return "Glad to hear you liked " + titles[0] +  "! Would you like to hear a similar movie?"
-            elif sentiment <0:
-                return "Sorry you did not like  " + titles[0] +  "!  What did you not like about it?"
-            else:
-                return "I can't tell how you felt about  " + titles[0] +  "!  Can you tell me more about your feelings toward it."
+            return "I processed {} in LLM Programming mode!!".format(line)
 
-        ########################################################################
-        #                          END OF YOUR CODE                            #
-        ########################################################################
+    # Extract movie title(s)
+        titles = self.extract_titles(self.preprocess(line))
+        if not titles:
+        # 6f: If no movie found, assume off-topic and redirect
+            return "As a moviebot assistant, my job is to help you with only your movie-related needs! Anything film-related that you'd like to discuss?"
+
+    # Extract sentiment (6e)
+        sentiment = self.extract_sentiment(self.preprocess(line))
+        movie_title = titles[0]  # Assume single movie for now
+
+        # Track unique movies for recommendation (6g)
+        if movie_title not in self.user_movies:
+            self.user_movies.append(movie_title)
+
+        # Response based on sentiment (6e)
+        if sentiment > 0:
+            response = f"Ok, you liked \"{movie_title}\"! Tell me what you thought of another movie."
+        elif sentiment < 0:
+            response = f"Sorry you didn't like \"{movie_title}\"! What did you not like about it?"
+        else:
+            response = f"I can't tell how you felt about \"{movie_title}\". Can you tell me more about your feelings toward it?"
+
+        # Check if 5 movies have been mentioned (6g)
+        if len(self.user_movies) >= 5:
+            response += " Ok, now that you've shared your opinion on 5/5 films, would you like a recommendation?"
+
         return response
+            
 
     @staticmethod
     def preprocess(text):
@@ -442,9 +446,12 @@ class Chatbot:
         # TODO: Write a system prompt message for the LLM chatbot              #
         ########################################################################
 
-        system_prompt = """Your name is moviebot. You are a movie recommender chatbot. """ +\
-        """You can help users find movies they like and provide information about movies."""
-
+        system_prompt = """Your name is moviebot. You are a movie recommender chatbot. 
+        You should:
+         - Extract and acknowledge the user's sentiment about a movie they mention.
+         -  Keep the conversation focused on movies, redirecting users if they go off-topic.
+         - Track the number of movies the user has mentioned and ask if they want a recommendation after 5 unique movies.
+    """
         ########################################################################
         #                          END OF YOUR CODE                            #
         ########################################################################
