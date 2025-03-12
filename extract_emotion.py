@@ -1,7 +1,7 @@
 from chatbot import Chatbot
 
 def test_extract_emotion():
-    # Initialize the chatbot in LLM programming mode
+    # Initialize the chatbot in LLM mode (needed for emotion extraction)
     bot = Chatbot(llm_enabled=True)
     
     # Test cases for emotion extraction
@@ -11,11 +11,11 @@ def test_extract_emotion():
         "Ewww that movie was so gruesome. Stop making stupid recommendations",
         "Wait what? Titanic sank?",
         "What movies are you going to recommend today",
-        "I am quite frustrated by these awful recommendations!!!",
-        "Great suggestion! It put me in a great mood!",
-        "Disgusting!!!",
-        "Woah!! That movie was so shockingly bad! You had better stop making awful recommendations they're pissing me off.",
-        "Ack, woah! Oh my gosh, what was that? Really startled me. I just heard something really frightening!"
+        "I love this movie so much!",
+        "That film made me feel so sad",
+        "This horror movie really scared me",
+        "I'm surprised by how good that movie was!",
+        "I'm really frustrated with these recommendations"
     ]
     
     # Run each test case and print the results
