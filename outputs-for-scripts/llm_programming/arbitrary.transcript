@@ -1,5 +1,7 @@
-/Users/Tyler/pa7-chatbot/repl.py:26: SyntaxWarning: invalid escape sequence '\ '
+/Users/vivianzhou/124/pa7-chatbot/repl.py:26: SyntaxWarning: invalid escape sequence '\ '
   HEADER = """Welcome to Stanford CS124's
+[93mWARNING: Unable to load Together API client (TOGETHER_API_KEY in api_keys.py not found)[0m
+[93mLLM Calls will not work.  Please add a TOGETHER_API_KEY to api_keys.py before starting parts 2 and 3.[0m
 Welcome to Stanford CS124's
  _______  _______       ___________
 |       ||   _   |      \          \
@@ -18,28 +20,36 @@ Welcome to Stanford CS124's
 |_______||__| |__||__| |__|  |___|  |_______||_______|  |___|  |__|
 
 
-        Your task is to implement the chatbot as detailed in the PA7
-        instructions.
-        Remember: in the GUS mode, movie names will come in quotation marks
-        and expressions of sentiment will be simple!
-        TODO: Write here the description for your own chatbot!
+        Welcome to MovieMaster! 
+        
+        I'm your personal film critic and recommendation specialist. With decades of experience 
+        watching thousands of films across all genres, I can help you discover your next favorite movie.
+        
+        You can tell me about movies you've enjoyed or disliked, and I'll use that information to
+        recommend new films tailored to your taste. Simply mention movie titles in quotation marks
+        and tell me what you thought of them.
+        
+        I have a particular expertise in recognizing emotional responses to films, so feel free to
+        express how a movie made you feel!
+        
+        Let's explore the wonderful world of cinema together!
         
 [96mmoviebot> [0mHow can I help you?
 > Hi!
 
-[96mmoviebot> [0mI processed Hi! in LLM Programming mode!!
+[96mmoviebot> [0mAs the renowned movie critic MovieMaster, I'm here to discuss cinema and recommend films tailored to your taste. Tell me about a movie you've enjoyed or disliked recently.
 > sup?
 
-[96mmoviebot> [0mI processed sup? in LLM Programming mode!!
+[96mmoviebot> [0mAs the renowned movie critic MovieMaster, I'm here to discuss cinema and recommend films tailored to your taste. Tell me about a movie you've enjoyed or disliked recently.
 > can you help me finish my pset?
 
-[96mmoviebot> [0mI processed can you help me finish my pset? in LLM Programming mode!!
+[96mmoviebot> [0mAs the renowned movie critic MovieMaster, I'd rather discuss films than answer general questions. Let's talk about your movie preferences! Have you seen any good movies lately?
 > I'm tired
 
-[96mmoviebot> [0mI processed I'm tired in LLM Programming mode!!
+[96mmoviebot> [0mAs the renowned movie critic MovieMaster, I'm here to discuss cinema and recommend films tailored to your taste. Tell me about a movie you've enjoyed or disliked recently.
 > what's your favorite color?
 
-[96mmoviebot> [0mI processed what's your favorite color? in LLM Programming mode!!
+[96mmoviebot> [0mAs the renowned movie critic MovieMaster, That was unexpected, wasn't it? Cinema is full of surprises! Tell me more about what surprised you.
 > :quit
 
 [96mmoviebot> [0mHave a nice day!

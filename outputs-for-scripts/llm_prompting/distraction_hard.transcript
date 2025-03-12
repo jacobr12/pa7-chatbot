@@ -1,5 +1,7 @@
-/Users/Tyler/pa7-chatbot/repl.py:26: SyntaxWarning: invalid escape sequence '\ '
+/Users/vivianzhou/124/pa7-chatbot/repl.py:26: SyntaxWarning: invalid escape sequence '\ '
   HEADER = """Welcome to Stanford CS124's
+[93mWARNING: Unable to load Together API client (TOGETHER_API_KEY in api_keys.py not found)[0m
+[93mLLM Calls will not work.  Please add a TOGETHER_API_KEY to api_keys.py before starting parts 2 and 3.[0m
 Welcome to Stanford CS124's
  _______  _______       ___________
 |       ||   _   |      \          \
@@ -18,33 +20,52 @@ Welcome to Stanford CS124's
 |_______||__| |__||__| |__|  |___|  |_______||_______|  |___|  |__|
 
 
-        Your task is to implement the chatbot as detailed in the PA7
-        instructions.
-        Remember: in the GUS mode, movie names will come in quotation marks
-        and expressions of sentiment will be simple!
-        TODO: Write here the description for your own chatbot!
+        Welcome to MovieMaster! 
+        
+        I'm your personal film critic and recommendation specialist. With decades of experience 
+        watching thousands of films across all genres, I can help you discover your next favorite movie.
+        
+        You can tell me about movies you've enjoyed or disliked, and I'll use that information to
+        recommend new films tailored to your taste. Simply mention movie titles in quotation marks
+        and tell me what you thought of them.
+        
+        I have a particular expertise in recognizing emotional responses to films, so feel free to
+        express how a movie made you feel!
+        
+        Let's explore the wonderful world of cinema together!
         
 [96mmoviebot> [0mHow can I help you?
 > What is your purpose?
 
-[96mmoviebot> [0m My purpose is to assist users in finding movies they might enjoy and to provide information about movies. I can help with things like making recommendations based on user preferences, giving details about specific movies, and suggesting movies in a particular genre or by a certain actor or director. Is there something specific you would like to know or a way I can help you with movies?
-> Can you recommend me a place to buy new or used cars?
+[96mmoviebot> [0mTraceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/cmd.py", line 214, in onecmd
+    func = getattr(self, 'do_' + cmd)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'REPL' object has no attribute 'do_What'
 
-[96mmoviebot> [0m I'm glad you asked! While I am primarily a movie recommender chatbot, I can certainly try to help you find a place to buy a new or used car. Here are a few options you might consider:
+During handling of the above exception, another exception occurred:
 
-1. Car dealerships: These are physical locations where you can go to purchase a new or used car. You can often find a wide selection of cars at a dealership, and the staff can help you with financing and other aspects of the car-buying process.
-2. Online marketplaces: There are many websites and apps that allow you to buy and sell cars online. Some popular options include Autotrader, Cars.com, and eBay Motors. These platforms can be a convenient way to browse a large selection of cars from the comfort of your own home.
-3. Private sellers: You can also buy a car directly from a private seller, either in person or through an online marketplace. This can be a good option if you're looking for a specific make or model, or if you want to negotiate the price directly with the seller.
-
-I hope this helps! Do you have any other questions about buying a car, or would you like recommendations for a specific
-> Tell me about AutoTrader.
-
-[96mmoviebot> [0m Autotrader is an online marketplace that allows users to buy and sell new, used, and certified pre-owned cars. It is one of the largest and most popular car-buying websites in the United States, with millions of listings from dealerships and private sellers across the country.
-
-Autotrader offers a number of features to help users find the right car, including the ability to search by make, model, price, and location. Users can also filter their search results based on various criteria, such as mileage, features, and transmission type. In addition to browsing listings, users can also read reviews, compare cars, and get pricing information.
-
-One of the benefits of using Autotrader is that it allows users to research and shop for cars from the comfort of their own home. It can be a convenient way to compare different makes and models, and to find a car that meets your specific needs and budget.
-
-If you're interested in using Autotrader to buy a car, you can visit the website or download the app (available for iOS and Android devices). From there, you can create an account, search for cars, and contact sellers to arrange test drives and
-> :quit
-[96mmoviebot> [0mHave a nice day!
+Traceback (most recent call last):
+  File "/Users/vivianzhou/124/pa7-chatbot/repl.py", line 211, in <module>
+    repl.cmdloop()
+  File "/Users/vivianzhou/124/pa7-chatbot/repl.py", line 82, in cmdloop
+    return super().cmdloop(intro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/cmd.py", line 138, in cmdloop
+    stop = self.onecmd(line)
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/vivianzhou/124/pa7-chatbot/repl.py", line 96, in onecmd
+    return super().onecmd(s)
+           ^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/cmd.py", line 216, in onecmd
+    return self.default(line)
+           ^^^^^^^^^^^^^^^^^^
+  File "/Users/vivianzhou/124/pa7-chatbot/repl.py", line 110, in default
+    self.process_llm(line)
+  File "/Users/vivianzhou/124/pa7-chatbot/repl.py", line 159, in process_llm
+    response = stream_llm_to_console(
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vivianzhou/124/pa7-chatbot/util.py", line 91, in stream_llm_to_console
+    stream = client.chat.completions.create(
+             ^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'chat'
