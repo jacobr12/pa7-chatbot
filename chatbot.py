@@ -119,23 +119,20 @@ class Chatbot:
                 if is_emotion_expression:
                     emotions = self.extract_emotion(preprocessed)
                     
-                    # Define a movie critic persona
-                    persona_intro = "As the renowned movie critic MovieMaster, "
-                    
-                    # Respond to emotions appropriately
+                    # Define responses that clearly acknowledge the user's emotion
                     if emotions:
                         if "Anger" in emotions:
-                            return f"{persona_intro}Oh! Did I make you angry? I apologize. Let's reset and talk about films you enjoy instead."
+                            return "I can hear that you're angry. I want to understand what upset you about the movies we discussed. Could you tell me more?"
                         elif "Disgust" in emotions:
-                            return f"{persona_intro}I see that film disgusted you! Some movies can be quite graphic. Would you prefer recommendations for lighter movies?"
+                            return "I understand that you found that disgusting. Would you prefer to discuss movies with less graphic content?"
                         elif "Fear" in emotions:
-                            return f"{persona_intro}Horror films can certainly be frightening! Would you like recommendations for less scary movies?"
+                            return "I can tell that really frightened you. Horror movies can be intense - would you like to explore some less scary options?"
                         elif "Happiness" in emotions:
-                            return f"{persona_intro}I'm glad you're feeling happy! Would you like more recommendations for uplifting films?"
+                            return "Your enthusiasm is wonderful! I'm so glad you're enjoying our movie discussion. What aspects made you particularly happy?"
                         elif "Sadness" in emotions:
-                            return f"{persona_intro}I notice you're feeling down. Perhaps a comedy would help lift your spirits? Tell me about some comedies you've enjoyed."
+                            return "I hear the sadness in your words. Sometimes movies can really touch us deeply. Would you like to talk about what moved you?"
                         elif "Surprise" in emotions:
-                            return f"{persona_intro}That was unexpected, wasn't it? Cinema is full of surprises! Tell me more about what surprised you."
+                            return "That certainly caught you by surprise! I'd love to hear more about what surprised you about the movie."
                 
                 # If not an emotion expression, check if it might be a foreign title
                 movie_indices = self.find_movies_by_title(line)
@@ -734,14 +731,14 @@ class Chatbot:
         emotion_keywords = {
             "Anger": ["angry", "mad", "furious", "annoyed", "irritated", "outraged", "upset", "frustrat", 
                      "pissed", "hate", "fed up", "bad recommendation", "stupid", "horrible", "terrible", 
-                     "worst", "sucks", "awful", "hate", "rage", "fuming", "infuriated", "offended"],
+                     "worst", "sucks", "awful", "rage", "fuming", "infuriated", "offended"],
             "Disgust": ["disgust", "gross", "ew", "eww", "ewww", "yuck", "nasty", "revolting", "gruesome", 
                        "repulsive", "ugh", "disaster", "sick", "vomit", "filthy", "disgusting", "repulsed"],
             "Fear": ["scare", "afraid", "fear", "terrif", "horrif", "frighten", "dread", "panic", "anxiety", 
                     "nervous", "petrified", "creepy", "spooky", "haunting", "terrifying", "scared", "fearful",
-                    "frightened", "frightening", "horror", "terrified", "frightful", "scary", "startled", 
-                    "frightening", "alarming", "spooked", "bone-chilling", "eerie", "traumatic", "nightmare",
-                    "screaming", "scream", "scared me", "made me jump", "gave me nightmares", "gives me chills",
+                    "frightened", "frightening", "horror", "terrified", "frightful", "scary", "alarming",
+                    "spooked", "bone-chilling", "eerie", "traumatic", "nightmare",
+                    "screaming", "scream", "scared me", "gave me nightmares", "gives me chills",
                     "too scary", "jump scare", "freaked out", "trembling", "shaking", "paralyzed", "frozen",
                     "shivers", "spine-tingling", "blood-curdling", "unsettling", "disturbing", "uneasy"],
             "Happiness": ["happy", "joy", "glad", "delight", "enjoy", "love", "excit", "pleased", "thrill", 
@@ -752,7 +749,7 @@ class Chatbot:
                        "cry", "tears", "depressing"],
             "Surprise": ["surprise", "shock", "amaze", "astonish", "stun", "unexpected", "wow", "whoa", 
                         "what?", "wait what", "can't believe", "unbelievable", "incredible", "mind-blown",
-                        "surprised", "shocking", "startled", "unexpected", "stunned", "astonished",
+                        "surprised", "shocking", "stunned", "astonished",
                         "omg", "oh my god", "oh my", "what the", "didn't expect", "didn't see that coming",
                         "suddenly", "out of nowhere", "never saw it coming", "plot twist", "twist ending",
                         "shocking ending", "jaw dropped", "flabbergasted", "speechless", "gasp", "wtf",
@@ -790,7 +787,7 @@ class Chatbot:
             r'jump scare', r'scared me', r'frightened me', r'terrified me',
             r'bone-chilling', r'blood-curdling', r'hair-raising', r'\beerie\b',
             r'makes me afraid', r'made me afraid', r'makes me scared', r'made me scared',
-            r'startled me', r'freaked out', r'freaking out', r'spooked',
+            r'freaked out', r'freaking out', r'spooked',
             r'heard something (scary|frightening)', r'saw something (scary|frightening)',
             r'afraid of', r'scared of', r'frightened of', r'terrified of',
             r'trembling', r'shaking', r'too afraid', r'too scared', r'horrific', r'horrifying',
@@ -857,12 +854,16 @@ class Chatbot:
                 detected_emotions.append("Fear")
                 break
         
-        # Properly handle the test case with "startled me" and "frightening"
-        if "startled me" in text_lower and "frightening" in text_lower:
+        # Add a specific check for "startled" and "frightening" combinations
+        if "startled" in text_lower:
             if "Fear" not in detected_emotions:
                 detected_emotions.append("Fear")
             if "Surprise" not in detected_emotions:
                 detected_emotions.append("Surprise")
+        
+        if "frightening" in text_lower:
+            if "Fear" not in detected_emotions:
+                detected_emotions.append("Fear")
         
         return detected_emotions
 
