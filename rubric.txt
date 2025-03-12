@@ -8,15 +8,15 @@
 # You will only receive credit for the features you mark as YES below!                  #
 #########################################################################################
 
-FEATURE - [LLM] Communicating Sentiment and Movie Extraction: NO
-FEATURE - [LLM] Staying Focused on Movies: NO
-FEATURE - [LLM] Giving Recommendations after 5 Data Points: NO
-FEATURE - [LLM PROGRAMMING] Find Foreign Movie Title: NO
-FEATURE - [LLM PROGRAMMING] Extracting Emotion from User Input: NO
-FEATURE - [LLM PROGRAMMING] Responding to Arbitrary User Input: NO
-FEATURE - [LLM PROGRAMMING] Responding Appropriately to User Emotion: NO
-FEATURE - [LLM PROGRAMMING] Chatbot Theme/Persona: NO
-Did not implement any of the above features: YES
+FEATURE - [LLM] Communicating Sentiment and Movie Extraction: YES
+FEATURE - [LLM] Staying Focused on Movies: YES
+FEATURE - [LLM] Giving Recommendations after 5 Data Points: YES
+FEATURE - [LLM PROGRAMMING] Find Foreign Movie Title: YES
+FEATURE - [LLM PROGRAMMING] Extracting Emotion from User Input: YES
+FEATURE - [LLM PROGRAMMING] Responding to Arbitrary User Input: YES
+FEATURE - [LLM PROGRAMMING] Responding Appropriately to User Emotion: YES
+FEATURE - [LLM PROGRAMMING] Chatbot Theme/Persona: YES
+Did not implement any of the above features: NO
 
 #########################################################################################
 # Team Contributions                                                                    #
